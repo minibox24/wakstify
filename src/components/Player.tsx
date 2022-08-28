@@ -3,7 +3,7 @@ import React from "react";
 import styles from "../css/Player.module.css";
 
 import { useRecoilState } from "recoil";
-import nowPlayingState from "../recoil/nowPlaying";
+import { nowPlaying as nowPlayingState } from "../recoil";
 
 import { trackDurationToReadable, timeToReadable } from "../utils";
 
@@ -31,10 +31,8 @@ export default function App() {
 
     if (video) {
       video.addEventListener("timeupdate", timeUpdate);
-      console.log("a");
 
       return () => {
-        console.log("b");
         video.removeEventListener("timeupdate", timeUpdate);
       };
     }

@@ -2,7 +2,7 @@ import { ITrack } from "../types";
 import styles from "../css/Track.module.css";
 
 import { useSetRecoilState } from "recoil";
-import nowPlayingState from "../recoil/nowPlaying";
+import { nowPlaying as nowPlayingState } from "../recoil";
 
 import { convertDate, trackDurationToReadable } from "../utils";
 
