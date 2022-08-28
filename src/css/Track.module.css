@@ -1,0 +1,47 @@
+.track {
+  display: grid;
+  grid-template-columns: 6fr 2fr 2fr 2fr;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.track:hover {
+  background-color: #2a2a2a;
+}
+
+.coverImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+
+  margin-right: 10px;
+}
+
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.artist {
+  color: #b3b3b3;
+  font-size: 0.8rem;
+}
+
+.textBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #b3b3b3;
+}
