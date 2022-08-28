@@ -10,6 +10,8 @@ import {
   PauseIcon,
   BackwardIcon,
   ForwardIcon,
+  SpeakerWaveIcon,
+  SpeakerXMarkIcon,
 } from "@heroicons/react/24/solid";
 
 import { trackDurationToReadable, timeToReadable } from "../utils";
@@ -18,6 +20,8 @@ export default function App() {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [currentTime, setCurrentTime] = React.useState<number>(0);
   const [nowPlaying, setNowPlaying] = useRecoilState(nowPlayingState);
+
+  const [beforeVolume, setBeforeVolume] = React.useState<number>(1);
 
   const timeUpdate = React.useCallback(() => {
     if (nowPlaying && videoRef.current) {
@@ -32,6 +36,13 @@ export default function App() {
       }
     }
   }, [nowPlaying, setNowPlaying]);
+
+  const volumeButton = () => {
+    if (videoRef.current) {
+      setBeforeVolume(videoRef.current.volume);
+      videoRef.current.volume = videoRef.current.volume ? 0 : beforeVolume;
+    }
+  };
 
   React.useEffect(() => {
     const video = videoRef.current;
@@ -111,6 +122,7 @@ export default function App() {
                 className={styles.progressSlider}
                 style={
                   {
+                    width: "80%",
                     "--progress": `${
                       ((currentTime - nowPlaying.track.start) /
                         (nowPlaying.track.end - nowPlaying.track.start)) *
@@ -133,7 +145,37 @@ export default function App() {
           </div>
 
           <div className={`${styles.barItem} ${styles.controls}`}>
-            <span>대충 소리 컨트롤</span>
+            {videoRef.current && videoRef.current.volume ? (
+              <SpeakerWaveIcon
+                className={styles.volumeButton}
+                onClick={volumeButton}
+              />
+            ) : (
+              <SpeakerXMarkIcon
+                className={styles.volumeButton}
+                onClick={volumeButton}
+              />
+            )}
+
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={(videoRef.current?.volume ?? 1) * 100}
+              className={styles.progressSlider}
+              style={
+                {
+                  "--progress": `${(videoRef.current?.volume ?? 1) * 100}%`,
+                  "--defaultColor": "#a7a7a7",
+                } as React.CSSProperties
+              }
+              onChange={(e) => {
+                if (videoRef.current) {
+                  videoRef.current.volume = Number(e.target.value) / 100;
+                }
+              }}
+            />
           </div>
         </div>
       )}

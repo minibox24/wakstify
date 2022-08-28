@@ -75,12 +75,11 @@ video {
 }
 
 .progressSlider {
-  width: 80%;
   margin: 0 8px;
 
   background: linear-gradient(
     to right,
-    white var(--progress),
+    var(--defaultColor, white) var(--progress),
     #414141 var(--progress)
   );
 
@@ -142,4 +141,11 @@ video {
 .controls {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+
+.volumeButton {
+  width: 23px;
+  height: 23px;
+  color: #a7a7a7;
 }
