@@ -5,6 +5,13 @@ import styles from "../css/Player.module.css";
 import { useRecoilState } from "recoil";
 import { nowPlaying as nowPlayingState } from "../recoil";
 
+import {
+  PlayIcon,
+  PauseIcon,
+  BackwardIcon,
+  ForwardIcon,
+} from "@heroicons/react/24/solid";
+
 import { trackDurationToReadable, timeToReadable } from "../utils";
 
 export default function App() {
@@ -65,7 +72,31 @@ export default function App() {
           </div>
 
           <div className={`${styles.barItem} ${styles.progress}`}>
-            <div className={styles.progressControl}>control buttons</div>
+            <div className={styles.progressControl}>
+              <BackwardIcon className={styles.nextButton} />
+
+              {videoRef.current && videoRef.current.paused ? (
+                <PlayIcon
+                  className={styles.playButton}
+                  onClick={() => {
+                    if (videoRef.current) {
+                      videoRef.current.play();
+                    }
+                  }}
+                />
+              ) : (
+                <PauseIcon
+                  className={styles.playButton}
+                  onClick={() => {
+                    if (videoRef.current) {
+                      videoRef.current.pause();
+                    }
+                  }}
+                />
+              )}
+
+              <ForwardIcon className={styles.nextButton} />
+            </div>
 
             <div className={styles.progressBar}>
               <span className={styles.barText}>

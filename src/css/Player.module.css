@@ -126,6 +126,18 @@ video {
   font-size: 0.8rem;
 }
 
+.nextButton {
+  width: 26px;
+  height: 26px;
+}
+
+.playButton {
+  width: 32px;
+  height: 32px;
+
+  margin: 0 5px;
+}
+
 .controls {
   display: flex;
   justify-content: flex-end;
