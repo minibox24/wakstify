@@ -78,6 +78,15 @@ export default function App() {
                 max={nowPlaying.track.end - nowPlaying.track.start}
                 value={currentTime - nowPlaying.track.start}
                 className={styles.progressSlider}
+                style={
+                  {
+                    "--progress": `${
+                      ((currentTime - nowPlaying.track.start) /
+                        (nowPlaying.track.end - nowPlaying.track.start)) *
+                      100
+                    }%`,
+                  } as React.CSSProperties
+                }
                 onChange={(e) => {
                   if (videoRef.current) {
                     videoRef.current.currentTime =

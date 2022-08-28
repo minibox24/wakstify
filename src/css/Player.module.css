@@ -76,6 +76,49 @@ video {
 .progressSlider {
   width: 80%;
   margin: 0 8px;
+
+  background: linear-gradient(
+    to right,
+    white var(--progress),
+    #414141 var(--progress)
+  );
+
+  -webkit-appearance: none;
+  height: 5px;
+  outline: none;
+  transition: opacity 0.2s;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.progressSlider::-webkit-slider-thumb {
+  appearance: none;
+}
+
+.progressSlider::-moz-range-thumb {
+  appearance: none;
+}
+
+.progressSlider:hover {
+  background: linear-gradient(
+    to right,
+    #1db954 var(--progress),
+    #414141 var(--progress)
+  );
+}
+
+.progressSlider:hover::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+}
+
+.progressSlider:hover::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
 }
 
 .barText {
