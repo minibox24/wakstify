@@ -126,16 +126,35 @@ video {
   font-size: 0.8rem;
 }
 
-.nextButton {
-  width: 26px;
-  height: 26px;
+.sideButton {
+  width: 16px;
+  height: 16px;
+
+  color: #bababa;
+  margin: 0 10px;
 }
 
 .playButton {
+  border: none;
+
   width: 32px;
   height: 32px;
+  border-radius: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   margin: 0 5px;
+}
+
+.enableColor {
+  color: #1db954;
+}
+
+.playButtonIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .controls {

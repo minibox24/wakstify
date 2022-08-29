@@ -14,3 +14,9 @@ export interface INowPlaying {
   track: ITrack;
   url: string;
 }
+
+export enum ELoopType {
+  None = "none",
+  All = "all",
+  One = "one",
+}

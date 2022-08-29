@@ -3,23 +3,41 @@ import React from "react";
 import styles from "../css/Player.module.css";
 
 import { useRecoilState } from "recoil";
-import { nowPlaying as nowPlayingState } from "../recoil";
+import {
+  nowPlaying as nowPlayingState,
+  shuffle as shuffleState,
+  loop as loopState,
+} from "../recoil";
 
 import {
-  PlayIcon,
-  PauseIcon,
-  BackwardIcon,
-  ForwardIcon,
+  // PlayIcon,
+  // PauseIcon,
+  // BackwardIcon,
+  // ForwardIcon,
   SpeakerWaveIcon,
   SpeakerXMarkIcon,
 } from "@heroicons/react/24/solid";
 
-import { trackDurationToReadable, timeToReadable } from "../utils";
+import {
+  PlayIcon,
+  PauseIcon,
+  PreviousIcon,
+  ForwardIcon,
+  ShuffleIcon,
+  LoopIcon,
+  LoopOneIcon,
+} from "./icons";
 
-export default function App() {
+import { trackDurationToReadable, timeToReadable } from "../utils";
+import { ELoopType } from "../types";
+
+export default function Player() {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [currentTime, setCurrentTime] = React.useState<number>(0);
+
   const [nowPlaying, setNowPlaying] = useRecoilState(nowPlayingState);
+  const [shuffle, setShuffle] = useRecoilState(shuffleState);
+  const [loop, setLoop] = useRecoilState(loopState);
 
   const [beforeVolume, setBeforeVolume] = React.useState<number>(1);
 
@@ -84,29 +102,53 @@ export default function App() {
 
           <div className={`${styles.barItem} ${styles.progress}`}>
             <div className={styles.progressControl}>
-              <BackwardIcon className={styles.nextButton} />
-
-              {videoRef.current && videoRef.current.paused ? (
-                <PlayIcon
-                  className={styles.playButton}
-                  onClick={() => {
-                    if (videoRef.current) {
-                      videoRef.current.play();
-                    }
-                  }}
+              <div onClick={() => setShuffle(!shuffle)}>
+                <ShuffleIcon
+                  className={`${styles.sideButton} ${
+                    shuffle && styles.enableColor
+                  }`}
                 />
-              ) : (
-                <PauseIcon
-                  className={styles.playButton}
-                  onClick={() => {
-                    if (videoRef.current) {
-                      videoRef.current.pause();
-                    }
-                  }}
-                />
-              )}
+              </div>
 
-              <ForwardIcon className={styles.nextButton} />
+              <PreviousIcon className={styles.sideButton} />
+
+              <button
+                className={styles.playButton}
+                onClick={() => {
+                  if (videoRef.current) {
+                    if (videoRef.current.paused) videoRef.current.play();
+                    else videoRef.current.pause();
+                  }
+                }}
+              >
+                {videoRef.current && videoRef.current.paused ? (
+                  <PlayIcon className={styles.playButtonIcon} />
+                ) : (
+                  <PauseIcon className={styles.playButtonIcon} />
+                )}
+              </button>
+
+              <ForwardIcon className={styles.sideButton} />
+
+              <div
+                onClick={() => {
+                  if (loop === ELoopType.None) setLoop(ELoopType.All);
+                  else if (loop === ELoopType.All) setLoop(ELoopType.One);
+                  else if (loop === ELoopType.One) setLoop(ELoopType.None);
+                }}
+              >
+                {loop === ELoopType.One ? (
+                  <LoopOneIcon
+                    className={`${styles.sideButton} ${styles.enableColor}`}
+                  />
+                ) : (
+                  <LoopIcon
+                    className={`${styles.sideButton} ${
+                      loop === ELoopType.All && styles.enableColor
+                    }`}
+                  />
+                )}
+              </div>
             </div>
 
             <div className={styles.progressBar}>
