@@ -19,9 +19,19 @@ export default function App() {
   return (
     <div className="App">
       <div style={{ height: "calc(100vh - 80px)", overflowY: "scroll" }}>
-        {tracks.map((track, index) => (
-          <Track track={track} key={index} />
-        ))}
+        <h1>임시 전체 노래 목록</h1>
+        <div
+          style={{
+            width: "1000px",
+            height: "500px",
+            overflowY: "scroll",
+            border: "1px solid white",
+          }}
+        >
+          {tracks.map((track, index) => (
+            <Track track={track} key={index} />
+          ))}
+        </div>
       </div>
 
       <Player />
