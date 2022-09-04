@@ -8,6 +8,7 @@ import {
   shuffle as shuffleState,
   loop as loopState,
   openPlaylist as openPlaylistState,
+  fullscreen as fullscreenState,
 } from "../recoil";
 
 import Hls, { FragmentLoaderContext, HlsConfig } from "hls.js";
@@ -25,6 +26,8 @@ import {
   VolumeMediumIcon,
   VolumeMinIcon,
   VolumeMuteIcon,
+  FullScreenIcon,
+  FullScreenExitIcon,
 } from "./icons";
 
 import { trackDurationToReadable, timeToReadable } from "../utils";
@@ -61,6 +64,7 @@ export default function Player() {
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
   const [loop, setLoop] = useRecoilState(loopState);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(openPlaylistState);
+  const [fullscreen, setFullscreen] = useRecoilState(fullscreenState);
 
   const [volume, setVolume] = React.useState<number>(1);
   const [beforeVolume, setBeforeVolume] = React.useState<number>(1);
@@ -256,12 +260,24 @@ export default function Player() {
               className={styles.progressSlider}
               style={
                 {
+                  width: "30%",
                   "--progress": `${(videoRef.current?.volume ?? 1) * 100}%`,
                   "--defaultColor": "#a7a7a7",
                 } as React.CSSProperties
               }
               onChange={(e) => setVolume(Number(e.target.value) / 100)}
             />
+
+            <div
+              style={{ marginLeft: 5 }}
+              onClick={() => setFullscreen(!fullscreen)}
+            >
+              {fullscreen ? (
+                <FullScreenIcon className={styles.icon} />
+              ) : (
+                <FullScreenExitIcon className={styles.icon} />
+              )}
+            </div>
           </div>
         </div>
       )}

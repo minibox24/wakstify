@@ -26,3 +26,8 @@ export const openPlaylist = atom<boolean>({
   key: "openPlaylist",
   default: false,
 });
+
+export const fullscreen = atom<boolean>({
+  key: "fullscreen",
+  default: false,
+});
