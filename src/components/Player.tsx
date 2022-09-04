@@ -82,7 +82,7 @@ export default function Player() {
   const volumeButton = () => {
     if (videoRef.current) {
       setBeforeVolume(videoRef.current.volume);
-      videoRef.current.volume = videoRef.current.volume ? 0 : beforeVolume;
+      setVolume(videoRef.current.volume ? 0 : beforeVolume);
     }
   };
 
