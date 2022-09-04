@@ -9,6 +9,8 @@ import {
   loop as loopState,
 } from "../recoil";
 
+import Hls, { FragmentLoaderContext, HlsConfig } from "hls.js";
+
 import {
   PlayIcon,
   PauseIcon,
@@ -28,6 +30,29 @@ import { trackDurationToReadable, timeToReadable } from "../utils";
 import { ELoopType } from "../types";
 
 export default function Player() {
+  const hls = React.useMemo(
+    () =>
+      new Hls({
+        // @ts-ignore TODO: 뇌가 아픈 타입스크립트
+        fLoader: class extends Hls.DefaultConfig.loader {
+          constructor(config: HlsConfig) {
+            super(config);
+
+            const load = this.load.bind(this);
+
+            this.load = (context: FragmentLoaderContext, config, callbacks) => {
+              const key = context.frag.baseurl.split("?")[1];
+
+              context.url += `?${key}`;
+
+              load(context, config, callbacks);
+            };
+          }
+        },
+      }),
+    []
+  );
+
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [currentTime, setCurrentTime] = React.useState<number>(0);
 
@@ -62,21 +87,23 @@ export default function Player() {
     const video = videoRef.current;
 
     if (video) {
+      hls.attachMedia(video);
+
       video.addEventListener("timeupdate", timeUpdate);
 
       return () => {
         video.removeEventListener("timeupdate", timeUpdate);
       };
     }
-  }, [timeUpdate]);
+  }, [timeUpdate, hls]);
 
   React.useEffect(() => {
     if (nowPlaying && videoRef.current) {
-      videoRef.current.src = nowPlaying.url;
+      hls.loadSource(nowPlaying.source.url + nowPlaying.source.key);
       videoRef.current.currentTime = nowPlaying.track.start;
       videoRef.current.play();
     }
-  }, [nowPlaying]);
+  }, [nowPlaying, hls]);
 
   return (
     <div className={styles.player}>
