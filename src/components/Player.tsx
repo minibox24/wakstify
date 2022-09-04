@@ -60,6 +60,7 @@ export default function Player() {
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
   const [loop, setLoop] = useRecoilState(loopState);
 
+  const [volume, setVolume] = React.useState<number>(1);
   const [beforeVolume, setBeforeVolume] = React.useState<number>(1);
 
   const timeUpdate = React.useCallback(() => {
@@ -104,6 +105,12 @@ export default function Player() {
       videoRef.current.play();
     }
   }, [nowPlaying, hls]);
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.volume = volume;
+    }
+  }, [volume]);
 
   return (
     <div className={styles.player}>
@@ -239,7 +246,7 @@ export default function Player() {
               min={0}
               max={100}
               step={1}
-              value={(videoRef.current?.volume ?? 1) * 100}
+              value={volume * 100}
               className={styles.progressSlider}
               style={
                 {
@@ -247,11 +254,7 @@ export default function Player() {
                   "--defaultColor": "#a7a7a7",
                 } as React.CSSProperties
               }
-              onChange={(e) => {
-                if (videoRef.current) {
-                  videoRef.current.volume = Number(e.target.value) / 100;
-                }
-              }}
+              onChange={(e) => setVolume(Number(e.target.value) / 100)}
             />
           </div>
         </div>
