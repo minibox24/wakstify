@@ -10,15 +10,6 @@ import {
 } from "../recoil";
 
 import {
-  // PlayIcon,
-  // PauseIcon,
-  // BackwardIcon,
-  // ForwardIcon,
-  SpeakerWaveIcon,
-  SpeakerXMarkIcon,
-} from "@heroicons/react/24/solid";
-
-import {
   PlayIcon,
   PauseIcon,
   PreviousIcon,
@@ -26,6 +17,11 @@ import {
   ShuffleIcon,
   LoopIcon,
   LoopOneIcon,
+  PlaylistIcon,
+  VolumeMaxIcon,
+  VolumeMediumIcon,
+  VolumeMinIcon,
+  VolumeMuteIcon,
 } from "./icons";
 
 import { trackDurationToReadable, timeToReadable } from "../utils";
@@ -104,13 +100,13 @@ export default function Player() {
             <div className={styles.progressControl}>
               <div onClick={() => setShuffle(!shuffle)}>
                 <ShuffleIcon
-                  className={`${styles.sideButton} ${
+                  className={`${styles.icon} ${styles.sideButton} ${
                     shuffle && styles.enableColor
                   }`}
                 />
               </div>
 
-              <PreviousIcon className={styles.sideButton} />
+              <PreviousIcon className={`${styles.icon} ${styles.sideButton}`} />
 
               <button
                 className={styles.playButton}
@@ -128,7 +124,7 @@ export default function Player() {
                 )}
               </button>
 
-              <ForwardIcon className={styles.sideButton} />
+              <ForwardIcon className={`${styles.icon} ${styles.sideButton}`} />
 
               <div
                 onClick={() => {
@@ -139,11 +135,11 @@ export default function Player() {
               >
                 {loop === ELoopType.One ? (
                   <LoopOneIcon
-                    className={`${styles.sideButton} ${styles.enableColor}`}
+                    className={`${styles.icon} ${styles.sideButton} ${styles.enableColor}`}
                   />
                 ) : (
                   <LoopIcon
-                    className={`${styles.sideButton} ${
+                    className={`${styles.icon} ${styles.sideButton} ${
                       loop === ELoopType.All && styles.enableColor
                     }`}
                   />
@@ -187,17 +183,29 @@ export default function Player() {
           </div>
 
           <div className={`${styles.barItem} ${styles.controls}`}>
-            {videoRef.current && videoRef.current.volume ? (
-              <SpeakerWaveIcon
-                className={styles.volumeButton}
-                onClick={volumeButton}
-              />
-            ) : (
-              <SpeakerXMarkIcon
-                className={styles.volumeButton}
-                onClick={volumeButton}
-              />
-            )}
+            <div>
+              <PlaylistIcon className={styles.icon} />
+            </div>
+
+            <div onClick={volumeButton}>
+              {videoRef.current && videoRef.current.volume === 0 ? (
+                <VolumeMuteIcon
+                  className={`${styles.icon} ${styles.volumeButton}`}
+                />
+              ) : videoRef.current && videoRef.current.volume < 0.25 ? (
+                <VolumeMinIcon
+                  className={`${styles.icon} ${styles.volumeButton}`}
+                />
+              ) : videoRef.current && videoRef.current.volume < 0.5 ? (
+                <VolumeMediumIcon
+                  className={`${styles.icon} ${styles.volumeButton}`}
+                />
+              ) : (
+                <VolumeMaxIcon
+                  className={`${styles.icon} ${styles.volumeButton}`}
+                />
+              )}
+            </div>
 
             <input
               type="range"
@@ -222,7 +230,7 @@ export default function Player() {
         </div>
       )}
 
-      <video ref={videoRef} width="800px" autoPlay controls />
+      <video ref={videoRef} width="400px" autoPlay controls />
     </div>
   );
 }

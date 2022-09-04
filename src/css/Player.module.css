@@ -148,6 +148,14 @@ video {
   margin: 0 5px;
 }
 
+.icon {
+  color: #a7a7a7;
+}
+
+.icon:hover {
+  color: white;
+}
+
 .enableColor {
   color: #1db954;
 }
@@ -157,6 +165,14 @@ video {
   height: 16px;
 }
 
+.playButton:hover {
+  transform: scale(1.1);
+}
+
+.enableColor:hover {
+  color: #1ed760;
+}
+
 .controls {
   display: flex;
   justify-content: flex-end;
@@ -164,7 +180,9 @@ video {
 }
 
 .volumeButton {
-  width: 23px;
-  height: 23px;
+  width: 16px;
+  height: 16px;
   color: #a7a7a7;
+
+  margin-left: 10px;
 }
