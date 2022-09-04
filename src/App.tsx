@@ -1,11 +1,16 @@
 import React from "react";
 import Track from "./components/Track";
+import Playlist from "./components/Playlist";
 import Player from "./components/Player";
+
+import { useRecoilValue } from "recoil";
+import { openPlaylist as openPlaylistState } from "./recoil";
 
 import { ITrack } from "./types";
 
 export default function App() {
   const [tracks, setTracks] = React.useState<ITrack[]>([]);
+  const openPlaylist = useRecoilValue(openPlaylistState);
 
   React.useEffect(() => {
     (async () => {
@@ -33,6 +38,8 @@ export default function App() {
           ))}
         </div>
       </div>
+
+      {openPlaylist && <Playlist />}
 
       <Player />
     </div>

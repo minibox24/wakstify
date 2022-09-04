@@ -1,0 +1,15 @@
+.playlist {
+  position: fixed;
+  top: 0;
+
+  width: 100%;
+  height: calc(100vh - 80px);
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+
+  background-color: black;
+  opacity: 85%;
+}

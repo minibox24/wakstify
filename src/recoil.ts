@@ -21,3 +21,8 @@ export const loop = atom<ELoopType>({
   key: "loop",
   default: ELoopType.None,
 });
+
+export const openPlaylist = atom<boolean>({
+  key: "openPlaylist",
+  default: false,
+});

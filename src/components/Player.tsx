@@ -7,6 +7,7 @@ import {
   nowPlaying as nowPlayingState,
   shuffle as shuffleState,
   loop as loopState,
+  openPlaylist as openPlaylistState,
 } from "../recoil";
 
 import Hls, { FragmentLoaderContext, HlsConfig } from "hls.js";
@@ -59,6 +60,7 @@ export default function Player() {
   const [nowPlaying, setNowPlaying] = useRecoilState(nowPlayingState);
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
   const [loop, setLoop] = useRecoilState(loopState);
+  const [openPlaylist, setOpenPlaylist] = useRecoilState(openPlaylistState);
 
   const [volume, setVolume] = React.useState<number>(1);
   const [beforeVolume, setBeforeVolume] = React.useState<number>(1);
@@ -217,8 +219,12 @@ export default function Player() {
           </div>
 
           <div className={`${styles.barItem} ${styles.controls}`}>
-            <div>
-              <PlaylistIcon className={styles.icon} />
+            <div onClick={() => setOpenPlaylist(!openPlaylist)}>
+              <PlaylistIcon
+                className={`${styles.icon} ${
+                  openPlaylist && styles.enableColor
+                }`}
+              />
             </div>
 
             <div onClick={volumeButton}>
