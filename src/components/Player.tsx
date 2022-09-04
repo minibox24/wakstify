@@ -27,7 +27,6 @@ import {
   VolumeMinIcon,
   VolumeMuteIcon,
   FullScreenIcon,
-  FullScreenExitIcon,
 } from "./icons";
 
 import { trackDurationToReadable, timeToReadable } from "../utils";
@@ -272,11 +271,7 @@ export default function Player() {
               style={{ marginLeft: 5 }}
               onClick={() => setFullscreen(!fullscreen)}
             >
-              {fullscreen ? (
-                <FullScreenIcon className={styles.icon} />
-              ) : (
-                <FullScreenExitIcon className={styles.icon} />
-              )}
+              <FullScreenIcon className={styles.icon} />
             </div>
           </div>
         </div>
