@@ -12,7 +12,10 @@ export interface ITrack {
 
 export interface INowPlaying {
   track: ITrack;
-  url: string;
+  source: {
+    url: string;
+    key: string;
+  };
 }
 
 export enum ELoopType {
