@@ -13,6 +13,9 @@ import VolumeMediumIcon from "./VolumeMediumIcon";
 import VolumeMinIcon from "./VolumeMinIcon";
 import VolumeMuteIcon from "./VolumeMuteIcon";
 
+import FullScreenIcon from "./FullScreenIcon";
+import FullScreenExitIcon from "./FullScreenExitIcon";
+
 export {
   PlayIcon,
   PauseIcon,
@@ -26,4 +29,6 @@ export {
   VolumeMediumIcon,
   VolumeMinIcon,
   VolumeMuteIcon,
+  FullScreenIcon,
+  FullScreenExitIcon,
 };
