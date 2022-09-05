@@ -259,7 +259,7 @@ export default function Player() {
               className={styles.progressSlider}
               style={
                 {
-                  width: "30%",
+                  width: "95px",
                   "--progress": `${(videoRef.current?.volume ?? 1) * 100}%`,
                   "--defaultColor": "#a7a7a7",
                 } as React.CSSProperties
