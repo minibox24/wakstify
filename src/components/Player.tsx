@@ -2,16 +2,17 @@ import React from "react";
 
 import styles from "../css/Player.module.css";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   nowPlaying as nowPlayingState,
   shuffle as shuffleState,
   loop as loopState,
   openPlaylist as openPlaylistState,
   fullscreen as fullscreenState,
+  paused as pausedState,
+  currentTime as currentTimeState,
+  volume as volumeState,
 } from "../recoil";
-
-import Hls, { FragmentLoaderContext, HlsConfig } from "hls.js";
 
 import {
   PlayIcon,
@@ -33,89 +34,23 @@ import { trackDurationToReadable, timeToReadable } from "../utils";
 import { ELoopType } from "../types";
 
 export default function Player() {
-  const hls = React.useMemo(
-    () =>
-      new Hls({
-        // @ts-ignore TODO: 뇌가 아픈 타입스크립트
-        fLoader: class extends Hls.DefaultConfig.loader {
-          constructor(config: HlsConfig) {
-            super(config);
+  const nowPlaying = useRecoilValue(nowPlayingState);
 
-            const load = this.load.bind(this);
+  const [paused, setPaused] = useRecoilState(pausedState);
+  const [currentTime, setCurrentTime] = useRecoilState(currentTimeState);
+  const [volume, setVolume] = useRecoilState(volumeState);
 
-            this.load = (context: FragmentLoaderContext, config, callbacks) => {
-              const key = context.frag.baseurl.split("?")[1];
-
-              context.url += `?${key}`;
-
-              load(context, config, callbacks);
-            };
-          }
-        },
-      }),
-    []
-  );
-
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-  const [currentTime, setCurrentTime] = React.useState<number>(0);
-
-  const [nowPlaying, setNowPlaying] = useRecoilState(nowPlayingState);
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
   const [loop, setLoop] = useRecoilState(loopState);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(openPlaylistState);
   const [fullscreen, setFullscreen] = useRecoilState(fullscreenState);
 
-  const [volume, setVolume] = React.useState<number>(1);
   const [beforeVolume, setBeforeVolume] = React.useState<number>(1);
 
-  const timeUpdate = React.useCallback(() => {
-    if (nowPlaying && videoRef.current) {
-      setCurrentTime(videoRef.current.currentTime);
-
-      const duration = nowPlaying.track.end - nowPlaying.track.start;
-      const now = videoRef.current.currentTime - nowPlaying.track.start;
-
-      if (now >= duration) {
-        setNowPlaying(null);
-        videoRef.current.pause();
-      }
-    }
-  }, [nowPlaying, setNowPlaying]);
-
   const volumeButton = () => {
-    if (videoRef.current) {
-      setBeforeVolume(videoRef.current.volume);
-      setVolume(videoRef.current.volume ? 0 : beforeVolume);
-    }
+    setBeforeVolume(volume);
+    setVolume(volume ? 0 : beforeVolume);
   };
-
-  React.useEffect(() => {
-    const video = videoRef.current;
-
-    if (video) {
-      hls.attachMedia(video);
-
-      video.addEventListener("timeupdate", timeUpdate);
-
-      return () => {
-        video.removeEventListener("timeupdate", timeUpdate);
-      };
-    }
-  }, [timeUpdate, hls]);
-
-  React.useEffect(() => {
-    if (nowPlaying && videoRef.current) {
-      hls.loadSource(nowPlaying.source.url + nowPlaying.source.key);
-      videoRef.current.currentTime = nowPlaying.track.start;
-      videoRef.current.play();
-    }
-  }, [nowPlaying, hls]);
-
-  React.useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.volume = volume;
-    }
-  }, [volume]);
 
   return (
     <div className={styles.player}>
@@ -137,7 +72,10 @@ export default function Player() {
 
           <div className={`${styles.barItem} ${styles.progress}`}>
             <div className={styles.progressControl}>
-              <div onClick={() => setShuffle(!shuffle)}>
+              <div
+                className={styles.iconContainer}
+                onClick={() => setShuffle(!shuffle)}
+              >
                 <ShuffleIcon
                   className={`${styles.icon} ${styles.sideButton} ${
                     shuffle && styles.enableColor
@@ -149,14 +87,9 @@ export default function Player() {
 
               <button
                 className={styles.playButton}
-                onClick={() => {
-                  if (videoRef.current) {
-                    if (videoRef.current.paused) videoRef.current.play();
-                    else videoRef.current.pause();
-                  }
-                }}
+                onClick={() => setPaused(!paused)}
               >
-                {videoRef.current && videoRef.current.paused ? (
+                {!paused ? (
                   <PlayIcon className={styles.playButtonIcon} />
                 ) : (
                   <PauseIcon className={styles.playButtonIcon} />
@@ -166,6 +99,7 @@ export default function Player() {
               <ForwardIcon className={`${styles.icon} ${styles.sideButton}`} />
 
               <div
+                className={styles.iconContainer}
                 onClick={() => {
                   if (loop === ELoopType.None) setLoop(ELoopType.All);
                   else if (loop === ELoopType.All) setLoop(ELoopType.One);
@@ -207,12 +141,11 @@ export default function Player() {
                     }%`,
                   } as React.CSSProperties
                 }
-                onChange={(e) => {
-                  if (videoRef.current) {
-                    videoRef.current.currentTime =
-                      nowPlaying.track.start + Number(e.target.value);
-                  }
-                }}
+                onChange={(e) =>
+                  setCurrentTime(
+                    nowPlaying.track.start + Number(e.target.value)
+                  )
+                }
               />
 
               <span className={styles.barText}>
@@ -222,7 +155,10 @@ export default function Player() {
           </div>
 
           <div className={`${styles.barItem} ${styles.controls}`}>
-            <div onClick={() => setOpenPlaylist(!openPlaylist)}>
+            <div
+              onClick={() => setOpenPlaylist(!openPlaylist)}
+              className={styles.iconContainer}
+            >
               <PlaylistIcon
                 className={`${styles.icon} ${
                   openPlaylist && styles.enableColor
@@ -230,16 +166,16 @@ export default function Player() {
               />
             </div>
 
-            <div onClick={volumeButton}>
-              {videoRef.current && videoRef.current.volume === 0 ? (
+            <div onClick={volumeButton} className={styles.iconContainer}>
+              {volume === 0 ? (
                 <VolumeMuteIcon
                   className={`${styles.icon} ${styles.volumeButton}`}
                 />
-              ) : videoRef.current && videoRef.current.volume < 0.25 ? (
+              ) : volume < 0.25 ? (
                 <VolumeMinIcon
                   className={`${styles.icon} ${styles.volumeButton}`}
                 />
-              ) : videoRef.current && videoRef.current.volume < 0.5 ? (
+              ) : volume < 0.5 ? (
                 <VolumeMediumIcon
                   className={`${styles.icon} ${styles.volumeButton}`}
                 />
@@ -260,7 +196,7 @@ export default function Player() {
               style={
                 {
                   width: "95px",
-                  "--progress": `${(videoRef.current?.volume ?? 1) * 100}%`,
+                  "--progress": `${(volume ?? 1) * 100}%`,
                   "--defaultColor": "#a7a7a7",
                 } as React.CSSProperties
               }
@@ -276,8 +212,6 @@ export default function Player() {
           </div>
         </div>
       )}
-
-      <video ref={videoRef} width="400px" autoPlay controls />
     </div>
   );
 }

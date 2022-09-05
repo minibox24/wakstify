@@ -31,3 +31,18 @@ export const fullscreen = atom<boolean>({
   key: "fullscreen",
   default: false,
 });
+
+export const volume = atom<number>({
+  key: "volume",
+  default: 1,
+});
+
+export const currentTime = atom<number>({
+  key: "currentTime",
+  default: 0,
+});
+
+export const paused = atom<boolean>({
+  key: "paused",
+  default: true,
+});

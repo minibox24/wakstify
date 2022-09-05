@@ -1,0 +1,254 @@
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: white;
+  transition: top 0.3s ease-in-out;
+}
+
+.minimized {
+  top: 120vh !important;
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background > img {
+  width: 120%;
+  height: 120%;
+
+  filter: blur(5px);
+  object-fit: cover;
+}
+
+.background > div {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.video {
+  max-width: 100%;
+  height: 50%;
+  z-index: 1;
+
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.control {
+  width: 90%;
+  z-index: 1;
+
+  margin-top: auto;
+  margin-bottom: 5vh;
+}
+
+.info {
+  display: flex;
+  align-items: flex-end;
+}
+
+.cover {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+
+  margin-right: 20px;
+}
+
+.infoText {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.artist {
+  color: #b3b3b3;
+  font-size: 1.1rem;
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.barText {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.progressSlider {
+  flex-grow: 1;
+  margin: 30px 8px;
+
+  background: linear-gradient(
+    to right,
+    var(--defaultColor, white) var(--progress),
+    #414141 var(--progress)
+  );
+
+  -webkit-appearance: none;
+  height: 5px;
+  outline: none;
+  transition: opacity 0.2s;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.progressSlider::-webkit-slider-thumb {
+  appearance: none;
+}
+
+.progressSlider::-moz-range-thumb {
+  appearance: none;
+}
+
+.progressSlider:hover {
+  background: linear-gradient(
+    to right,
+    #1db954 var(--progress),
+    #414141 var(--progress)
+  );
+}
+
+.progressSlider:hover::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+}
+
+.progressSlider:hover::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+}
+
+.controlButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.barItem {
+  width: 30%;
+  height: 100%;
+
+  display: flex;
+  flex-grow: 1;
+}
+
+.volumeBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.centerButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sideButton {
+  width: 24px;
+  height: 24px;
+
+  color: #c5c5c5;
+  margin: 0 15px;
+}
+
+.playButton {
+  border: none;
+
+  width: 60px;
+  height: 60px;
+  border-radius: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 10px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  color: #c5c5c5;
+}
+
+.icon:hover {
+  color: white;
+}
+
+.enableColor {
+  color: #1db954;
+}
+
+.playButtonIcon {
+  width: 25px;
+  height: 25px;
+}
+
+.playButton:hover {
+  transform: scale(1.1);
+}
+
+.enableColor:hover {
+  color: #1ed760;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.volumeButton {
+  width: 20px;
+  height: 20px;
+  color: #a7a7a7;
+
+  margin-left: 10px;
+}
+
+.links {
+  display: flex;
+  gap: 10px;
+}
+
+.linkIcon {
+  width: 24px;
+  height: 24px;
+}

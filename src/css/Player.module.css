@@ -1,8 +1,3 @@
-video {
-  position: fixed;
-  top: 0;
-}
-
 .player {
   position: fixed;
   bottom: 0;
@@ -145,6 +140,12 @@ video {
   justify-content: center;
 
   margin: 0 5px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon {

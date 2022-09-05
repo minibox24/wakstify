@@ -1,16 +1,21 @@
 import React from "react";
 import Track from "./components/Track";
 import Playlist from "./components/Playlist";
+import FullScreen from "./components/FullScreen";
 import Player from "./components/Player";
 
 import { useRecoilValue } from "recoil";
-import { openPlaylist as openPlaylistState } from "./recoil";
+import {
+  openPlaylist as openPlaylistState,
+  fullscreen as fullscreenState,
+} from "./recoil";
 
 import { ITrack } from "./types";
 
 export default function App() {
   const [tracks, setTracks] = React.useState<ITrack[]>([]);
   const openPlaylist = useRecoilValue(openPlaylistState);
+  const fullscreen = useRecoilValue(fullscreenState);
 
   React.useEffect(() => {
     (async () => {
@@ -41,6 +46,7 @@ export default function App() {
 
       {openPlaylist && <Playlist />}
 
+      <FullScreen />
       <Player />
     </div>
   );

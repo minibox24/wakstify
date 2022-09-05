@@ -16,6 +16,9 @@ import VolumeMuteIcon from "./VolumeMuteIcon";
 import FullScreenIcon from "./FullScreenIcon";
 import FullScreenExitIcon from "./FullScreenExitIcon";
 
+import CafeIcon from "./CafeIcon";
+import YoutubeIcon from "./YoutubeIcon";
+
 export {
   PlayIcon,
   PauseIcon,
@@ -31,4 +34,6 @@ export {
   VolumeMuteIcon,
   FullScreenIcon,
   FullScreenExitIcon,
+  CafeIcon,
+  YoutubeIcon,
 };
